@@ -1,7 +1,10 @@
-﻿using System;
+﻿using NeatScrape.Scrapers.Html;
+using System;
+using System.Threading.Tasks;
 
 namespace NeatScrape
 {
+    // TODO: Rename to HtmlScrapeInstruction
     public class ScrapeInstruction<T> where T : IScrapeResult, new()
     {
         private int _pagingCurrent = -1;
@@ -28,7 +31,7 @@ namespace NeatScrape
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public bool TryGetNextUrl(out string url)
+        public virtual bool TryGetNextUrl(out string url)
         {
             if (_pagingCurrent == -1)
             {
@@ -51,6 +54,19 @@ namespace NeatScrape
             url = Url.Replace("{{" + Configuration.PagingUrlParameter + "}}", _pagingCurrent.ToString());
             _pagingCurrent++;
             return true;
+        }
+
+        /// <summary>
+        /// Returns next HTML content (page) or null if there is none.
+        /// </summary>
+        public virtual async Task<string> GetNextContent(IHtmlFetcher htmlFetcher) // TODO: Get IHtmlFetcher from Configuration
+        {
+            if (TryGetNextUrl(out var url))
+            {
+                return await htmlFetcher.FetchAsString(url);
+            }
+
+            return null;
         }
     }
 }

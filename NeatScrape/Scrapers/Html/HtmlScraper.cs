@@ -22,10 +22,15 @@ namespace NeatScrape.Scrapers.Html
         {
             var results = new List<T>();
 
-            while (instruction.TryGetNextUrl(out var url))
+            do
             {
+                var html = await instruction.GetNextContent(_htmlFetcher);
+                if (html == null)
+                {
+                    break;
+                }
+
                 var doc = new HtmlDocument();
-                var html = await _htmlFetcher.FetchAsString(url);
                 doc.LoadHtml(html);
 
                 var entryNodes = GetEntryNodes(instruction, doc);
@@ -43,7 +48,7 @@ namespace NeatScrape.Scrapers.Html
                         results.Add(result);
                     }
                 }
-            }
+            } while (true);
 
             return results;
         }
