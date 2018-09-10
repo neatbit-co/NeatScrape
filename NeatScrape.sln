@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeatScrape", "NeatScrape\NeatScrape.csproj", "{1C243636-9923-4E25-B23E-FDE6298737D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeatScrape", "NeatScrape\NeatScrape.csproj", "{1C243636-9923-4E25-B23E-FDE6298737D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeatScrape.Tests", "NeatScrape.Tests\NeatScrape.Tests.csproj", "{B0C45754-15B5-48A5-B343-C7FBCC459150}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NeatScrape.Tests", "NeatScrape.Tests\NeatScrape.Tests.csproj", "{B0C45754-15B5-48A5-B343-C7FBCC459150}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{395C3410-6EDB-4D03-84E3-0A5853A6F2C5}"
+	ProjectSection(SolutionItems) = preProject
+		.circleci\config.yml = .circleci\config.yml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -8,5 +8,39 @@ jobs:
       DOTNET_CLI_TELEMETRY_OPTOUT: 1
     steps:
       - checkout
-      - run: dotnet restore
-      - run: dotnet build
+      - run:
+          name: Restore Packages
+          command: dotnet restore
+      - run:
+          name: Build
+          command: dotnet build
+  test:
+    docker:
+      - image: microsoft/dotnet:2.1-sdk
+    steps:
+      - checkout
+      - run:
+          name: Restore Packages
+          command: dotnet restore
+      - run:
+          name: Run Tests
+          command: cd ./NeatScrape.Tests && dotnet xunit -xml ~/tests/junit/xunit-test-results.xml
+      - run:
+          name: Setup Environment Variables
+          command: echo 'export PATH="/root/.dotnet/tools:$PATH"' >> $BASH_ENV
+      - run:
+          name: Convert Test Results
+          command: dotnet tool install --global dotnet-xunit-to-junit && dotnet xunit-to-junit ~/tests/junit/xunit-test-results.xml ~/tests/junit/test-results.xml
+      - store_test_results:
+          path: ~/tests
+      - store_artifacts:
+          path: ~/tests
+          destination: test-results
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
