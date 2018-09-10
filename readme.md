@@ -10,3 +10,8 @@ Install-Package NeatScrape
 
 # Usage
 
+See tests for examples.
+
+# License
+
+MIT
