@@ -1,4 +1,6 @@
-﻿namespace NeatScrape
+﻿using NeatScrape.Scraping.Html;
+
+namespace NeatScrape
 {
     public class QuerySelector
     {

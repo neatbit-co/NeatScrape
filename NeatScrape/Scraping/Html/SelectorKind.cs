@@ -1,4 +1,4 @@
-﻿namespace NeatScrape
+﻿namespace NeatScrape.Scraping.Html
 {
     public enum SelectorKind
     {

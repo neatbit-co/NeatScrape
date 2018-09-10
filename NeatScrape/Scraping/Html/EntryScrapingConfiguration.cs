@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace NeatScrape
+namespace NeatScrape.Scraping.Html
 {
     public class EntryScrapingConfiguration
     {

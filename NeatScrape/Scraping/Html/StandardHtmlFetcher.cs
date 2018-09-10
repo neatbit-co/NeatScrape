@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace NeatScrape.Scrapers.Html
+namespace NeatScrape.Scraping.Html
 {
     public class StandardHtmlFetcher : IHtmlFetcher
     {

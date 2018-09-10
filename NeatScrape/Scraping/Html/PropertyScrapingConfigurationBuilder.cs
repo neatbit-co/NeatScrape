@@ -1,7 +1,7 @@
 ﻿using Fluency;
 using NeatScrape.Converters;
 
-namespace NeatScrape
+namespace NeatScrape.Scraping.Html
 {
     public class PropertyScrapingConfigurationBuilder<TProp> : FluentBuilder<PropertyScrapingConfiguration>
     {

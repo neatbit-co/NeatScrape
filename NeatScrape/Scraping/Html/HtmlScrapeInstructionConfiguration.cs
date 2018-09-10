@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
-
-namespace NeatScrape
+﻿namespace NeatScrape.Scraping.Html
 {
-    public class ScrapeInstructionConfiguration<T> where T: IScrapeResult, new()
+    public class HtmlScrapeInstructionConfiguration
     {
+        /// <summary>
+        /// The URL or URL template to scrape
+        /// </summary>
+        public string Url { get; internal set; }
+
         /// <summary>
         /// Instructions for scraping entries
         /// </summary>

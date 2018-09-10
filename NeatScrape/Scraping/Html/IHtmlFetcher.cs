@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace NeatScrape.Scrapers.Html
+namespace NeatScrape.Scraping.Html
 {
     public interface IHtmlFetcher
     {

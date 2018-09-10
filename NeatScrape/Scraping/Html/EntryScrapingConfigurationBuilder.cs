@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using Fluency;
 using NeatScrape.Utils;
 
-namespace NeatScrape
+namespace NeatScrape.Scraping.Html
 {
     public class EntryScrapingConfigurationBuilder<T> : FluentBuilder<EntryScrapingConfiguration> where T: IScrapeResult, new()
     {
@@ -21,7 +21,7 @@ namespace NeatScrape
             return this;
         }
 
-        public EntryScrapingConfigurationBuilder<T> ScrapeProperty<TProp>(Expression<Func<T, TProp>> propertyExpression, Action<PropertyScrapingConfigurationBuilder<TProp>> builderAction)
+        public EntryScrapingConfigurationBuilder<T> MapProperty<TProp>(Expression<Func<T, TProp>> propertyExpression, Action<PropertyScrapingConfigurationBuilder<TProp>> builderAction)
         {
             var defaultBuilder = new PropertyScrapingConfigurationBuilder<TProp>(propertyExpression.GetName());
             builderAction(defaultBuilder);

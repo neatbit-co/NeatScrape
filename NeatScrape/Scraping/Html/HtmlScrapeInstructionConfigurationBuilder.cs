@@ -1,12 +1,13 @@
 ﻿using System;
 using Fluency;
 
-namespace NeatScrape
+namespace NeatScrape.Scraping.Html
 {
-    public class ScrapeInstructionConfigurationBuilder<T> : FluentBuilder<ScrapeInstructionConfiguration<T>> where T: IScrapeResult, new()
+    public class HtmlScrapeInstructionConfigurationBuilder<T> : FluentBuilder<HtmlScrapeInstructionConfiguration> where T: IScrapeResult, new()
     {
-        public ScrapeInstructionConfigurationBuilder()
+        public HtmlScrapeInstructionConfigurationBuilder()
         {
+            SetProperty(x => x.Url, (string) null);
             SetProperty(x => x.PagingUrlParameter, (string) null);
             SetProperty(x => x.PagingStart, 1);
             SetProperty(x => x.PagingIncrement, 1);
@@ -14,7 +15,13 @@ namespace NeatScrape
             SetProperty(x => x.MaxResults, (int?) null);
         }
 
-        public ScrapeInstructionConfigurationBuilder<T> ScrapeEntries(Action<EntryScrapingConfigurationBuilder<T>> builderAction)
+        public HtmlScrapeInstructionConfigurationBuilder<T> ScrapeUrl(string url)
+        {
+            SetProperty(x => x.Url, url);
+            return this;
+        }
+
+        public HtmlScrapeInstructionConfigurationBuilder<T> AsEntries(Action<EntryScrapingConfigurationBuilder<T>> builderAction)
         {
             var defaultBuilder = new EntryScrapingConfigurationBuilder<T>();
             builderAction(defaultBuilder);
@@ -22,7 +29,7 @@ namespace NeatScrape
             return this;
         }
 
-        public ScrapeInstructionConfigurationBuilder<T> WithPaging(string urlParameterName, int pagingStart, int pagingIncrement, int? pagingEnd = null, int? maxResults = null)
+        public HtmlScrapeInstructionConfigurationBuilder<T> WithPaging(string urlParameterName, int pagingStart, int pagingIncrement, int? pagingEnd = null, int? maxResults = null)
         {
             SetProperty(x => x.PagingUrlParameter, urlParameterName);
             SetProperty(x => x.PagingStart, pagingStart);

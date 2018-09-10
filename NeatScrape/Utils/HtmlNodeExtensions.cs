@@ -2,6 +2,7 @@
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
 using NeatScrape.Exceptions;
+using NeatScrape.Scraping.Html;
 
 namespace NeatScrape.Utils
 {
