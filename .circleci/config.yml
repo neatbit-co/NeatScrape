@@ -36,6 +36,21 @@ jobs:
       - store_artifacts:
           path: ~/tests
           destination: test-results
+      - persist_to_workspace:
+          root: ~/project
+          paths: .
+  publish:
+    docker:
+      - image: microsoft/dotnet:2.1-sdk
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Pack
+          command: dotnet pack ./NeatScrape/NeatScrape.csproj --output .
+      - run:
+          name: Publish
+          command: dotnet nuget push ./NeatScrape/*.nupkg -k $NUGET_APIKEY -s https://api.nuget.org/v3/index.json
 workflows:
   version: 2
   build-and-test:
@@ -44,3 +59,12 @@ workflows:
       - test:
           requires:
             - build
+  publish:
+    jobs:
+      - publish:
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
+      - test:
+          requires:
+            - test
