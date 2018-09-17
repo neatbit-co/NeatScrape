@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace NeatScrape.Scraping.Html
 {
@@ -52,7 +53,15 @@ namespace NeatScrape.Scraping.Html
         {
             if (TryGetNextUrl(out var url))
             {
-                return await _htmlFetcher.FetchAsString(url);
+                try
+                {
+                    return await _htmlFetcher.FetchAsString(url);
+                }
+                catch (Exception)
+                {
+                    // TODO: Add logging
+                    return null;
+                }
             }
 
             return null;

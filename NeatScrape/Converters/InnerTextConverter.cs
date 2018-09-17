@@ -2,16 +2,11 @@
 
 namespace NeatScrape.Converters
 {
-    public class InnerTextConverter : INodeConverter<string>
+    public class InnerTextConverter : NodeConverter<string>
     {
-        public string Convert(HtmlNode node)
+        public override string Convert(HtmlNode node)
         {
             return node.InnerText;
-        }
-
-        object INodeConverter.Convert(HtmlNode node)
-        {
-            return Convert(node);
         }
     }
 }

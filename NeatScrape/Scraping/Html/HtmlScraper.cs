@@ -22,7 +22,7 @@ namespace NeatScrape.Scraping.Html
 
         public async Task<ICollection<T>> Scrape<T>(HtmlScrapeInstruction<T> instruction) where T : IScrapeResult, new()
         {
-            var results = new List<T>();
+            var resultsByKey = new Dictionary<string, T>();
             var session = instruction.StartScrapingSession(_htmlFetcher);
 
             do
@@ -36,8 +36,13 @@ namespace NeatScrape.Scraping.Html
                 var doc = new HtmlDocument();
                 doc.LoadHtml(html);
 
-                var entryNodes = GetEntryNodes(instruction, doc);
+                var entryNodes = GetEntryNodes(instruction, doc).ToList();
+                if (!entryNodes.Any())
+                {
+                    break;
+                }
 
+                bool foundNewResults = false;
                 foreach (var entryNode in entryNodes)
                 {
                     if (entryNode == null)
@@ -46,14 +51,21 @@ namespace NeatScrape.Scraping.Html
                         continue;
                     }
 
-                    if (TryParseNode(entryNode, instruction, out var result))
+                    if (TryParseNode(entryNode, instruction, out var result) && !resultsByKey.ContainsKey(result.Key))
                     {
-                        results.Add(result);
+                        resultsByKey[result.Key] = result;
+                        foundNewResults = true;
                     }
                 }
+
+                if (!foundNewResults)
+                {
+                    break;
+                }
+
             } while (true);
 
-            return results;
+            return resultsByKey.Values;
         }
 
         private bool TryParseNode<T>(HtmlNode entryNode, HtmlScrapeInstruction<T> instruction, out T result)
@@ -67,7 +79,7 @@ namespace NeatScrape.Scraping.Html
                 var node = entryNode.QuerySingle(property.Selector);
                 if (node != null)
                 {
-                    var value = Convert(property.Converter ?? _defaultNodeConverter, node);
+                    var value = (property.Converter ?? _defaultNodeConverter).Convert(node);
                     result.SetProperty(property.PropertyName, value);
                     hasProperties = true;
                 }
@@ -92,22 +104,6 @@ namespace NeatScrape.Scraping.Html
             }
 
             return entryNodes;
-        }
-
-        private static object Convert(IPropertyValueConverter converter, HtmlNode node)
-        {
-            switch (converter)
-            {
-                case IInnerTextConverter innerTextConverter:
-                    return innerTextConverter.Convert(node.InnerText);
-
-                case INodeConverter nodeConverter:
-                    return nodeConverter.Convert(node);
-
-                default:
-                    throw new PropertyValueConversionException(
-                        $"There is no support for {converter.GetType()}. Please implement {nameof(IInnerTextConverter)} or {nameof(INodeConverter)}.");
-            }
         }
     }
 }
