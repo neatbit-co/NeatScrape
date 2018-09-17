@@ -4,42 +4,47 @@ using NeatScrape.Converters;
 using NeatScrape.Scraping.Html;
 using Xunit;
 
-namespace NeatScrape.Tests.Scenarios.GivenHtmlScraper
+namespace NeatScrape.Tests.Scenarios.GivenThreePagesOfProducts
 {
-    public class WhenAllAmazonPencilsAreScraped : GivenHtmlScraper
+    public class WhenPage1IsScraped : GivenThreePagesOfProducts
     {
         private ICollection<AmazonEntry> _results;
 
         public override void When()
         {
+            var scraper = new Scraper(c =>
+            {
+                c.UseScraper(new HtmlScraper(new ResourceHtmlFetcher()));
+            });
+
             var instruction = new HtmlScrapeInstruction<AmazonEntry>(config =>
             {
                 var linkConverter = new LinkConverter("https://www.amazon.com");
 
                 config
-                    .ScrapeUrl("NeatScrape.Tests.Resources.amazon_pencils_page{{page}}.html")
-                    .WithPaging("page", pagingStart: 1, pagingIncrement: 1, pagingEnd: 3)
+                    .ScrapeUrl(Resource)
+                    .WithPaging("page", pagingStart: 1, pagingIncrement: 1, pagingEnd: 1)
                     .AsEntries(e => e.FromCssSelector(".s-item-container")
                         .MapProperty(p => p.Title, p => p.FromCssSelector("a.s-access-detail-page h2"))
                         .MapProperty(p => p.Url, p => p.FromCssSelector("a.s-access-detail-page").UsingConverter(linkConverter)));
             });
 
-            _results = Scraper.Scrape(instruction).Result;
+            _results = scraper.Scrape(instruction).Result;
         }
 
-        public class Then : IClassFixture<WhenAllAmazonPencilsAreScraped>
+        public class Then : IClassFixture<WhenPage1IsScraped>
         {
-            private readonly WhenAllAmazonPencilsAreScraped _data;
+            private readonly WhenPage1IsScraped _data;
 
-            public Then(WhenAllAmazonPencilsAreScraped data)
+            public Then(WhenPage1IsScraped data)
             {
                 _data = data;
             }
 
             [Fact]
-            public void Then90ResultsAreReturned()
+            public void Then30ResultsAreReturned()
             {
-                _data._results.Should().HaveCount(90);
+                _data._results.Should().HaveCount(30);
             }
 
             [Fact]

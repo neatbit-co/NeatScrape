@@ -4,11 +4,9 @@ namespace NeatScrape.Converters
 {
     public interface INodeConverter : IPropertyValueConverter
     {
+        /// <summary>
+        /// Converts an HTML node to an object
+        /// </summary>
         object Convert(HtmlNode node);
-    }
-
-    public interface INodeConverter<T> : INodeConverter, IPropertyValueConverter<T>
-    {
-        new T Convert(HtmlNode node);
     }
 }
