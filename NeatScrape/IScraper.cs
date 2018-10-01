@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using NeatScrape.Scraping.Html;
 
-namespace NeatScrape.Scraping
+namespace NeatScrape
 {
     public interface IScraper
     {
