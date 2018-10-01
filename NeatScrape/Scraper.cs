@@ -5,7 +5,7 @@ using NeatScrape.Scraping.Html;
 
 namespace NeatScrape
 {
-    public class Scraper
+    public class Scraper : IScraper
     {
         private readonly ScraperConfiguration _configuration;
 

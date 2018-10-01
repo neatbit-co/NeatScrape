@@ -74,7 +74,7 @@ namespace NeatScrape.Scraping.Html
             result = new T();
             var hasProperties = false;
 
-            foreach (var property in instruction.Configuration.EntriesConfiguration.PropertyConfigurations)
+            foreach (var property in instruction.Configuration.EntriesConfiguration.PropertyConfigurations.Where(x => x.Selector?.Selector != null))
             {
                 var node = entryNode.QuerySingle(property.Selector);
                 if (node != null)
