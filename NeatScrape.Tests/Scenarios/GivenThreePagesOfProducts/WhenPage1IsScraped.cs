@@ -12,9 +12,9 @@ namespace NeatScrape.Tests.Scenarios.GivenThreePagesOfProducts
 
         public override void When()
         {
-            var scraper = new Scraper(c =>
+            IHtmlScraper scraper = new HtmlScraper(c =>
             {
-                c.UseScraper(new HtmlScraper(new ResourceHtmlFetcher()));
+                c.UseHtmlFetcher(new ResourceHtmlFetcher());
             });
 
             var instruction = new HtmlScrapeInstruction<AmazonEntry>(config =>

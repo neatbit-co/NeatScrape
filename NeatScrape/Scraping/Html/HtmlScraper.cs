@@ -1,29 +1,34 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Fluency.Utils;
 using HtmlAgilityPack;
-using NeatScrape.Converters;
 using NeatScrape.Exceptions;
 using NeatScrape.Utils;
 
 namespace NeatScrape.Scraping.Html
 {
-    public class HtmlScraper : IScraper
+    public class HtmlScraper : IHtmlScraper
     {
-        private readonly IHtmlFetcher _htmlFetcher;
-        private readonly INodeConverter _defaultNodeConverter;
+        private readonly HtmlScraperConfiguration _configuration;
 
-        public HtmlScraper(IHtmlFetcher htmlFetcher, INodeConverter defaultNodeConverter = null)
+        public HtmlScraper(Action<HtmlScraperConfigurationBuilder> config = null)
         {
-            _htmlFetcher = htmlFetcher;
-            _defaultNodeConverter = defaultNodeConverter ?? new TextNodeConverter();
+            var defaultConfig = new HtmlScraperConfigurationBuilder();
+            config?.Invoke(defaultConfig);
+            _configuration = defaultConfig.build();
+        }
+
+        public Task<ICollection<T>> Scrape<T>(IScrapeInstruction instruction) where T : IScrapeResult, new()
+        {
+            return Scrape((HtmlScrapeInstruction<T>) instruction);
         }
 
         public async Task<ICollection<T>> Scrape<T>(HtmlScrapeInstruction<T> instruction) where T : IScrapeResult, new()
         {
             var resultsByKey = new Dictionary<string, T>();
-            var session = instruction.StartScrapingSession(_htmlFetcher);
+            var session = instruction.StartScrapingSession(_configuration.HtmlFetcher);
 
             do
             {
@@ -79,7 +84,7 @@ namespace NeatScrape.Scraping.Html
                 var node = entryNode.QuerySingle(property.Selector);
                 if (node != null)
                 {
-                    var value = (property.Converter ?? _defaultNodeConverter).Convert(node);
+                    var value = (property.Converter ?? _configuration.DefaultNodeConverter).Convert(node);
                     result.SetProperty(property.PropertyName, value);
                     hasProperties = true;
                 }

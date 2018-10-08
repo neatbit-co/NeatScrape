@@ -4,7 +4,7 @@ NeatScrape is a C# library to scrape HTML content from web pages and turn it int
 
 # Installation (Nuget)
 
-**Warning:** This library is still in early alpha and is not ready for production use.
+**Warning:** This library is still in early alpha, is likely to get breaking changes often and is not ready for production use.
 
 ```
 Install-Package NeatScrape -IncludePrerelease
@@ -27,8 +27,8 @@ public class AmazonEntry : IScrapeResult
 ```
 
 ```csharp
-// Initialize a new Scraper instance
-var scraper = new Scraper();
+// Initialize a new Html Scraper instance
+IHtmlScraper scraper = new HtmlScraper();
 
 // Define instructions on how to fetch and parse the AmazonEntry results from a web page
 var instruction = new HtmlScrapeInstruction<AmazonEntry>(config =>

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RuntimeFrameworkVersion>2.1.4</RuntimeFrameworkVersion> <!-- Needed to run "donet xunit" on docker SDK image / CircleCI -->
+    <RuntimeFrameworkVersion>2.1.5</RuntimeFrameworkVersion> <!-- Needed to run "donet xunit" on docker SDK image / CircleCI -->
   </PropertyGroup>
 
   <ItemGroup>

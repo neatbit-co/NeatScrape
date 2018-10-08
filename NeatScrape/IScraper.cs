@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using NeatScrape.Scraping.Html;
 
 namespace NeatScrape
 {
     public interface IScraper
     {
-        Task<ICollection<T>> Scrape<T>(HtmlScrapeInstruction<T> instruction) where T : IScrapeResult, new();
+        Task<ICollection<T>> Scrape<T>(IScrapeInstruction instruction) where T : IScrapeResult, new();
     }
 }

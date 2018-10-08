@@ -2,7 +2,7 @@
 
 namespace NeatScrape.Scraping.Html
 {
-    public class HtmlScrapeInstruction<T> where T : IScrapeResult, new()
+    public class HtmlScrapeInstruction<T>: IScrapeInstruction where T : IScrapeResult, new()
     {
         public HtmlScrapeInstruction(Action<HtmlScrapeInstructionConfigurationBuilder<T>> config)
         {
