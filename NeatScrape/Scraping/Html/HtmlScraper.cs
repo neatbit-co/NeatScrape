@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Fluency.Utils;
 using HtmlAgilityPack;
+using NeatScrape.Converters;
 using NeatScrape.Exceptions;
 using NeatScrape.Utils;
 
@@ -84,7 +85,18 @@ namespace NeatScrape.Scraping.Html
                 var node = entryNode.QuerySingle(property.Selector);
                 if (node != null)
                 {
-                    var value = (property.Converter ?? _configuration.DefaultNodeConverter).Convert(node);
+                    object value = null;
+                    var converter = property.Converter ?? _configuration.DefaultNodeConverter;
+                    switch (converter)
+                    {
+                        case INodeConverter nodeConverter:
+                            value = nodeConverter.Convert(node);
+                            break;
+                        case IPropertyValueConverter propertyValueConverter:
+                            value = propertyValueConverter.Convert(node.InnerText);
+                            break;
+                    }
+                    
                     result.SetProperty(property.PropertyName, value);
                     hasProperties = true;
                 }
