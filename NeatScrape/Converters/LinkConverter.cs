@@ -9,7 +9,7 @@ namespace NeatScrape.Converters
 
         public LinkConverter(string baseUrl = null)
         {
-            _baseUri = baseUrl != null ? new Uri(baseUrl, UriKind.Absolute): null;
+            _baseUri = !string.IsNullOrEmpty(baseUrl) ? new Uri(baseUrl, UriKind.Absolute): null;
         }
 
         public override string Convert(HtmlNode node)
