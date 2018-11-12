@@ -7,7 +7,7 @@
     <Authors>Samuli Haverinen</Authors>
     <Description>A web page / HTML scraper for .NET Core</Description>
     <PackageProjectUrl>https://github.com/neatbit-co/NeatScrape</PackageProjectUrl>
-    <VersionPrefix>0.1.5</VersionPrefix>
+    <VersionPrefix>0.1.7</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
   </PropertyGroup>
 
